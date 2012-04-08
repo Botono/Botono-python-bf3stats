@@ -70,7 +70,7 @@ class API(object):
             raw_data = json.loads(result)
         except IOError, err:
             raw_data = {'status' : 'error', 'error': err}
-        return objDict(raw_data)
+        return raw_data
 
     def _sign(self, data_dict):
         """Sign data for a signed request"""
@@ -142,22 +142,3 @@ class API(object):
                 'clientident': client_ident,
                 }
         return self._request(post_data, data_group='getkey', plattform='global', sign=True)
-
-
-class objDict(object):
-    '''The recursive class for building and representing objects with.'''
-    # http://stackoverflow.com/questions/1305532/convert-python-dict-to-object
-
-    def __init__(self, obj):
-        for k, v in obj.iteritems():
-            if isinstance(v, dict):
-                setattr(self, _to_str(k).title(), objDict(v))
-            else:
-                setattr(self, k, v)
-
-    def __getitem__(self, val):
-        return self.__dict__[val]
-
-    def __repr__(self):
-        return '{%s}' % str(', '.join('%s : %s' % (k, repr(v)) for (k, v) in self.__dict__.iteritems()))
-
