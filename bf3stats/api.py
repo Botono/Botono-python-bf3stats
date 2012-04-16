@@ -83,9 +83,13 @@ class API(object):
     # reimplement bf3stats.com JSON API
     # Method names taken from the documentation
     # http://bf3stats.com/api_url
-    def playerlist(self, players):
+    def playerlist(self, players, parts=None):
         """Request a list of players"""
-        pass
+        post_data = {
+                'players' : json.dumps(players),
+                'opt' : parts
+                }
+        return self._request(post_data, data_group='playerlist')
 
     def player(self, player_name, parts=None):
         """Request a player"""
